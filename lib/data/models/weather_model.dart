@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:weather_clean_architecture_tdd/domain/entities/weather.dart';
 
 class WeatherModel extends WeatherEntity {
@@ -9,4 +11,31 @@ class WeatherModel extends WeatherEntity {
       required super.temperature,
       required super.pressure,
       required super.humidity});
+
+  factory WeatherModel.fromJson(Map<String, dynamic> json) {
+    return WeatherModel(
+        cityName: json['name'],
+        main: json['weather'][0]['main'],
+        description: json['weather'][0]['description'],
+        iconCode: json['weather'][0]['icon'],
+        temperature: json['main']['temp'],
+        pressure: json['main']['pressure'],
+        humidity: json['main']['humidity']);
+  }
+
+  Map<String, dynamic> toJson() => {
+        "weather": [
+          {
+            "main": main,
+            "description": description,
+            "icon": iconCode,
+          }
+        ],
+        "main": {
+          "temp": temperature,
+          "pressure": pressure,
+          "humidity": humidity,
+        },
+        "name": cityName,
+      };
 }

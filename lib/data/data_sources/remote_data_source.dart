@@ -7,8 +7,7 @@ import 'package:weather_clean_architecture_tdd/data/models/weather_model.dart';
 import 'package:http/http.dart' as http;
 
 abstract class WeatherRemoteDataSource {
-  Future<Either<ServerException, WeatherModel>> getCurrentWeather(
-      String cityName);
+  Future<WeatherModel> getCurrentWeather(String cityName);
 }
 
 class WeatherRemoteDataSourceImpl extends WeatherRemoteDataSource {
@@ -16,15 +15,15 @@ class WeatherRemoteDataSourceImpl extends WeatherRemoteDataSource {
   WeatherRemoteDataSourceImpl({required this.client});
 
   @override
-  Future<Either<ServerException, WeatherModel>> getCurrentWeather(
-      String cityName) async {
+  Future<WeatherModel> getCurrentWeather(String cityName) async {
     final response =
         await client.get(Uri.parse(Urls.currentWeatherByName(cityName)));
 
     if (response.statusCode == 200) {
-      return Right(WeatherModel.fromJson(jsonDecode(response.body)));
+      return WeatherModel.fromJson(json.decode(response.body));
     } else {
-      return Left(ServerException());
+      print('Throwing Exception');
+      throw ServerException();
     }
   }
 }

@@ -6,6 +6,7 @@ import 'package:http/http.dart' as http;
 import 'package:mockito/mockito.dart';
 import 'package:weather_clean_architecture_tdd/core/constants/constants.dart';
 import 'package:weather_clean_architecture_tdd/core/error/exception.dart';
+import 'package:weather_clean_architecture_tdd/core/error/failure.dart';
 import 'package:weather_clean_architecture_tdd/data/data_sources/remote_data_source.dart';
 import 'package:weather_clean_architecture_tdd/data/models/weather_model.dart';
 
@@ -39,7 +40,7 @@ void main() {
       final result =
           await weatherRemoteDataSourceImpl.getCurrentWeather(testCityName);
 
-      expect(result, isA<Right>());
+      expect(result, isA<WeatherModel>());
     });
 
     test('should return error from response code 404', () async {
@@ -52,11 +53,11 @@ void main() {
         ),
       ).thenAnswer((_) async => http.Response('Not Found', 404));
 
-      // act
-      final result =
-          await weatherRemoteDataSourceImpl.getCurrentWeather(testCityName);
-
-      expect(result, isA<Left>());
+      expect(
+        () async =>
+            await weatherRemoteDataSourceImpl.getCurrentWeather(testCityName),
+        throwsA(isA<ServerException>()),
+      );
     });
   });
 }

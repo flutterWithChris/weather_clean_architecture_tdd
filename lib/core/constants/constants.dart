@@ -4,7 +4,7 @@ class Urls {
   static const String baseUrl = 'http://api.openweathermap.org/data/2.5';
   static String apiKey = dotenv.get('OPEN_WEATHER_API_KEY');
   static String currentWeatherByName(String city) =>
-      '$baseUrl/weather?q=$city&appid=$apiKey';
+      '$baseUrl/weather?q=$city&APPID=$apiKey';
   static String weatherIcon(String iconCode) =>
       'https://openweathermap.org/img/wn/$iconCode@2x.png';
 }

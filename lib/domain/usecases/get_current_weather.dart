@@ -7,9 +7,9 @@ import 'package:weather_clean_architecture_tdd/domain/repositories/weather_repos
 class GetCurrentWeatherUseCase {
   final WeatherRepository weatherRepository;
 
-  GetCurrentWeatherUseCase({
-    required this.weatherRepository,
-  });
+  GetCurrentWeatherUseCase(
+    this.weatherRepository,
+  );
 
   Future<Either<Failure, WeatherEntity>> execute(String cityName) async {
     return weatherRepository.getCurrentWeather(cityName);
